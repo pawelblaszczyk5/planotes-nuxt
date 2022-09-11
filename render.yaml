@@ -5,7 +5,7 @@ services:
     region: frankfurt
     plan: free
     branch: main
-    healthCheckPath: /_health
+    healthCheckPath: /api/_health
     buildCommand: npm i -g pnpm && pnpm i --frozen-lockfile --shamefully-hoist && pnpm build
     startCommand: pnpm start
     autoDeploy: false
