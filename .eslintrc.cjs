@@ -3,6 +3,7 @@ require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
 	root: true,
+	plugins: ['canonical'],
 	extends: [
 		'eslint:recommended',
 		'plugin:vue/vue3-recommended',
@@ -20,7 +21,7 @@ module.exports = {
 			{ vars: 'all', args: 'after-used', ignoreRestSiblings: true },
 		],
 		'@typescript-eslint/array-type': ['error', { default: 'generic' }],
-		'@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+		'@typescript-eslint/consistent-type-definitions': ['error', 'type'],
 		'@typescript-eslint/no-redeclare': ['error', { ignoreDeclarationMerge: false }],
 		'import/order': [
 			'error',
@@ -73,6 +74,7 @@ module.exports = {
 		'vue/padding-line-between-blocks': ['error', 'always'],
 		'vue/no-setup-props-destructure': 'off',
 		'vue/multi-word-component-names': 'off',
+		'canonical/prefer-inline-type-import': 2,
 	},
 	parserOptions: {
 		ecmaVersion: 'latest',
