@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	const { data } = $(useAsyncData(() => trpcClient.greeting.query('world')));
+	const { data } = await useAsyncData('greeting', () => useTrpcClient().greeting.query('world'));
 </script>
 
 <template>
