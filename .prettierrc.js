@@ -9,5 +9,5 @@ module.exports = {
 	arrowParens: 'avoid',
 	singleAttributePerLine: false,
 	vueIndentScriptAndStyle: true,
-	plugins: [],
+	plugins: [require('prettier-plugin-tailwindcss')],
 };

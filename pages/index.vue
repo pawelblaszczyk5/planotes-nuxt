@@ -3,5 +3,5 @@
 </script>
 
 <template>
-	<h1>{{ data }}</h1>
+	<h1 class="p-12 text-4xl">{{ data }}<i class="i-mdi-abugida-thai" /></h1>
 </template>
