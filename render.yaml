@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: planotes-app
+    env: node
+    region: frankfurt
+    plan: free
+    branch: main
+    healthCheckPath: /_health
+    buildCommand: npm i -g pnpm && pnpm i --frozen-lockfile --shamefully-hoist && pnpm build
+    startCommand: pnpm start
+    autoDeploy: false
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: planotes-db
+          property: connectionString
+      - fromGroup: planotes-email
+
+databases:
+  - name: planotes-db
+    region: frankfurt
+    plan: free

@@ -6,7 +6,8 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+		"start": "node .output/server/index.mjs"
 	},
 	"devDependencies": {
 		"@rushstack/eslint-patch": "^1.1.4",
@@ -26,7 +27,12 @@
 	"dependencies": {
 		"@trpc/client": "10.0.0-proxy-alpha.74",
 		"@trpc/server": "10.0.0-proxy-alpha.74",
+		"h3": "^0.7.21",
 		"ufo": "^0.8.5",
 		"zod": "^3.19.0"
+	},
+	"engines": {
+		"node": ">=16",
+		"pnpm": ">=7"
 	}
 }
