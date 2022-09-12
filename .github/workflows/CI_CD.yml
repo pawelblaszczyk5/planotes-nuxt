@@ -24,7 +24,7 @@ jobs:
           version: 7
 
       - name: Install dependencies
-        run: pnpm i --shamefully-hoist --frozen-lockfile
+        run: pnpm i --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -34,9 +34,3 @@ jobs:
 
       - name: Typecheck
         run: pnpm vue-tsc
-
-      - name: Trigger render deploy via webhook
-        uses: zzzze/webhook-trigger@d83e16935dfe5c1362f730e4326a59519d77ae5b
-        with:
-          data: '{"event_type":"build"}'
-          webhook_url: ${{ secrets.RENDER_WEBHOOK_URL }}

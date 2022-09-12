@@ -1,3 +1,0 @@
-[phases.install]
-  cmds = ['pnpm i --frozen-lockfile --shamefully-hoist']
-  
