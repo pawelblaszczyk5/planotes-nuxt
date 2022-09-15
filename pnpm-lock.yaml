@@ -6,9 +6,11 @@ specifiers:
   '@rushstack/eslint-patch': ^1.1.4
   '@trpc/client': 10.0.0-proxy-alpha.74
   '@trpc/server': 10.0.0-proxy-alpha.74
+  '@types/nodemailer': ^6.4.6
   '@unocss/nuxt': ^0.45.18
   '@vue/eslint-config-prettier': ^7.0.0
   '@vue/eslint-config-typescript': ^11.0.1
+  envsafe: ^2.0.3
   eslint: ^8.23.0
   eslint-import-resolver-typescript: ^3.5.1
   eslint-plugin-canonical: ^3.1.0
@@ -16,6 +18,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-unicorn: ^43.0.2
   eslint-plugin-vue: ^9.4.0
+  nodemailer: ^6.7.8
   nuxt: 3.0.0-rc.10
   prettier: ^2.7.1
   prettier-plugin-tailwindcss: ^0.1.13
@@ -29,7 +32,10 @@ dependencies:
   '@prisma/client': 4.3.1_prisma@4.3.1
   '@trpc/client': 10.0.0-proxy-alpha.74_36o77syoowmrieskh7r2qg2rtm
   '@trpc/server': 10.0.0-proxy-alpha.74
+  '@types/nodemailer': 6.4.6
   '@unocss/nuxt': 0.45.21
+  envsafe: 2.0.3
+  nodemailer: 6.7.8
   ufo: 0.8.5
   zod: 3.19.1
 
@@ -889,7 +895,12 @@ packages:
 
   /@types/node/18.7.18:
     resolution: {integrity: sha512-m+6nTEOadJZuTPkKR/SYK3A2d7FZrgElol9UP1Kae90VVU4a6mxnPuLiIW1m4Cq4gZ/nWb9GrdVXJCoCazDAbg==}
-    dev: true
+
+  /@types/nodemailer/6.4.6:
+    resolution: {integrity: sha512-pD6fL5GQtUKvD2WnPmg5bC2e8kWCAPDwMPmHe/ohQbW+Dy0EcHgZ2oCSuPlWNqk74LS5BVMig1SymQbFMPPK3w==}
+    dependencies:
+      '@types/node': 18.7.18
+    dev: false
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -2337,6 +2348,11 @@ packages:
   /entities/2.2.0:
     resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
     dev: true
+
+  /envsafe/2.0.3:
+    resolution: {integrity: sha512-51lek8h5btjXhXUDW//Pno7HPydM1WQzltOb1/ONRKdwB2QkfAURnN4Qn0cJ5LzGvX2Km1ReR2O3K3Bqq9sBMg==}
+    engines: {node: '>=10'}
+    dev: false
 
   /errno/0.1.8:
     resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
@@ -4263,6 +4279,11 @@ packages:
 
   /node-releases/2.0.6:
     resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
+
+  /nodemailer/6.7.8:
+    resolution: {integrity: sha512-2zaTFGqZixVmTxpJRCFC+Vk5eGRd/fYtvIR+dl5u9QXLTQWGIf48x/JXvo58g9sa0bU6To04XUv554Paykum3g==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /nopt/5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
