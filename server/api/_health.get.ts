@@ -19,7 +19,7 @@ const verifyDB = async () => {
 	}
 };
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async () => {
 	const results = await Promise.allSettled([verifyDB(), verifySMTP()]);
 	const errors = results
 		.map(result => result.status === 'rejected' && result.reason)
