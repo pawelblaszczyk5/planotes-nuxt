@@ -3,6 +3,7 @@ import { type H3Event } from 'h3';
 import { createURL } from 'ufo';
 
 import { trpcRouter } from '~~/server/trpc';
+import { getPrismaInstance } from '~~/server/utils/db';
 
 const TRPC_ENDPOINT_LENGTH = '/api/trpc'.length + 1;
 
@@ -28,6 +29,7 @@ export const trpcEventHandler = async (event: H3Event): Promise<string | undefin
 		path: url.pathname.slice(TRPC_ENDPOINT_LENGTH),
 		createContext: async () => ({
 			event,
+			db: await getPrismaInstance(),
 		}),
 	});
 

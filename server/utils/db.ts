@@ -1,5 +1,13 @@
 import { PrismaClient } from '@prisma/client';
 
-export const db = new PrismaClient();
+export const getPrismaInstance = (() => {
+	let db: PrismaClient;
 
-db.$connect();
+	return async () => {
+		if (db) return db;
+		db = new PrismaClient();
+
+		await db.$connect();
+		return db;
+	};
+})();
