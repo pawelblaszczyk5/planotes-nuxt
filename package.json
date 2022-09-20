@@ -7,7 +7,10 @@
 		"postinstall": "nuxt prepare && prisma generate",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
 		"preview": "nuxt preview",
-		"start": "node .output/server/index.mjs"
+		"start": "node .output/server/index.mjs",
+		"prisma:generate": "prisma generate",
+		"prisma:dev": "prisma db push",
+		"prisma:migrate": "prisma migrate dev"
 	},
 	"dependencies": {
 		"@prisma/client": "^4.3.1",
