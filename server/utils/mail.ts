@@ -18,7 +18,7 @@ const transporterConfig: SMTPTransport.Options = {
 	},
 };
 
-const transporter: Transporter = createTransport(transporterConfig);
+export const transporter: Transporter = createTransport(transporterConfig);
 
 interface SendEmailOptions {
 	html: string;
