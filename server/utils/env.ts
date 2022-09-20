@@ -1,11 +1,11 @@
 import { type TypeOf, z } from 'zod';
 
-const isProdEnv = process.env['NODE_ENV'] !== 'production';
+const isDevEnv = process.env['NODE_ENV'] !== 'production';
 
 const withDevDefault = <ZodType extends z.ZodTypeAny>(
 	schema: ZodType,
 	defaultValue: TypeOf<ZodType>,
-) => (isProdEnv ? schema.default(defaultValue) : schema);
+) => (isDevEnv ? schema.default(defaultValue) : schema);
 
 const envSchema = z.object({
 	NODE_ENV: withDevDefault(z.enum(['development', 'test', 'production']), 'development'),

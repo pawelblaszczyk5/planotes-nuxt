@@ -29,5 +29,7 @@ export default defineEventHandler(async () => {
 		throw createError({ statusCode: 500, data: errors });
 	}
 
-	return 'OK';
+	return {
+		data: 'OK',
+	};
 });
