@@ -1,26 +1,29 @@
-import { envsafe, str, url, email } from 'envsafe';
+import { type TypeOf, z } from 'zod';
 
-export const env = envsafe({
-	NODE_ENV: str({
-		devDefault: 'development',
-		choices: ['development', 'test', 'production'],
-	}),
-	DATABASE_URL: url({
-		devDefault: 'postgresql://postgres:postgres@localhost:5432/planotes',
-	}),
-	DKIM_PRIVATE_KEY: str({
-		devDefault: 'dkim_key',
-	}),
-	DKIM_SELECTOR: str({
-		devDefault: 'dkim_selector',
-	}),
-	SMTP_HOST: str({
-		devDefault: 'localhost',
-	}),
-	SMTP_USER: email({
-		devDefault: 'magic@planotes.xyz',
-	}),
-	SMTP_PASSWORD: str({
-		devDefault: 'hard_password_123',
-	}),
+const isProdEnv = process.env['NODE_ENV'] !== 'production';
+
+const withDevDefault = <ZodType extends z.ZodTypeAny>(
+	schema: ZodType,
+	defaultValue: TypeOf<ZodType>,
+) => (isProdEnv ? schema.default(defaultValue) : schema);
+
+const envSchema = z.object({
+	NODE_ENV: withDevDefault(z.enum(['development', 'test', 'production']), 'development'),
+	DATABASE_URL: withDevDefault(
+		z.string().url(),
+		'postgresql://postgres:postgres@localhost:5432/planotes',
+	),
+	DKIM_PRIVATE_KEY: withDevDefault(z.string(), 'dkim_key'),
+	DKIM_SELECTOR: withDevDefault(z.string(), 'dkim_selector'),
+	SMTP_HOST: withDevDefault(z.string(), 'localhost'),
+	SMTP_USER: withDevDefault(z.string().email(), 'magic@planotes.xyz'),
+	SMTP_PASSWORD: withDevDefault(z.string(), 'hard_password_123'),
 });
+
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+	throw '❌ Invalid or missing env variables';
+}
+
+export const env = parsed.data;

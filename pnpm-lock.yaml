@@ -10,7 +10,6 @@ specifiers:
   '@unocss/nuxt': ^0.45.18
   '@vue/eslint-config-prettier': ^7.0.0
   '@vue/eslint-config-typescript': ^11.0.1
-  envsafe: ^2.0.3
   eslint: ^8.23.0
   eslint-import-resolver-typescript: ^3.5.1
   eslint-plugin-canonical: ^3.1.0
@@ -34,7 +33,6 @@ dependencies:
   '@trpc/server': 10.0.0-proxy-alpha.74
   '@types/nodemailer': 6.4.6
   '@unocss/nuxt': 0.45.21
-  envsafe: 2.0.3
   nodemailer: 6.7.8
   ufo: 0.8.5
   zod: 3.19.1
@@ -2348,11 +2346,6 @@ packages:
   /entities/2.2.0:
     resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
     dev: true
-
-  /envsafe/2.0.3:
-    resolution: {integrity: sha512-51lek8h5btjXhXUDW//Pno7HPydM1WQzltOb1/ONRKdwB2QkfAURnN4Qn0cJ5LzGvX2Km1ReR2O3K3Bqq9sBMg==}
-    engines: {node: '>=10'}
-    dev: false
 
   /errno/0.1.8:
     resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
