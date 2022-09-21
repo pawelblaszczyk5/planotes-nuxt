@@ -1,7 +1,7 @@
 import { timingSafeEqual, createHmac } from 'node:crypto';
 
 const COOKIE_SECRET = 'SECRETXXX';
-const COOKIE_READING_ERRROR = "Cookie value can't be verifed";
+const COOKIE_READING_ERRROR = 'Cookie value can not be verifed';
 
 const convertToBase64 = (stringToConvert: string) =>
 	Buffer.from(stringToConvert).toString('base64');

@@ -20,10 +20,10 @@ const envSchema = z.object({
 	SMTP_PASSWORD: withDevDefault(z.string(), 'hard_password_123'),
 });
 
-const parsed = envSchema.safeParse(process.env);
+const result = envSchema.safeParse(process.env);
 
-if (!parsed.success) {
+if (!result.success) {
 	throw '❌ Invalid or missing env variables';
 }
 
-export const env = parsed.data;
+export const env = result.data;
