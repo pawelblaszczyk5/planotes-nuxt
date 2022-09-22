@@ -21,7 +21,7 @@ module.exports = {
 			{ vars: 'all', args: 'after-used', ignoreRestSiblings: true },
 		],
 		'@typescript-eslint/array-type': ['error', { default: 'generic' }],
-		'@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+		'@typescript-eslint/consistent-type-definitions': ['error', 'type'],
 		'@typescript-eslint/no-redeclare': ['error', { ignoreDeclarationMerge: false }],
 		'import/order': [
 			'error',
@@ -59,6 +59,7 @@ module.exports = {
 		'unicorn/prefer-type-error': 'off',
 		'unicorn/prefer-top-level-await': 'off',
 		'unicorn/no-keyword-prefix': 'off',
+		'unicorn/explicit-length-check': 'off',
 		'vue/html-self-closing': [
 			'error',
 			{

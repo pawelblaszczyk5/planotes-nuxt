@@ -26,6 +26,7 @@ export default defineNuxtPlugin(nuxtApp => {
 });
 
 declare module '#app' {
+	// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 	interface NuxtApp {
 		$trpcClient: ReturnType<typeof createTRPCProxyClient<TrpcRouter>>;
 	}

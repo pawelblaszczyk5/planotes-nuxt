@@ -20,17 +20,17 @@ const transporterConfig: SMTPTransport.Options = {
 
 export const transporter: Transporter = createTransport(transporterConfig);
 
-interface SendEmailOptions {
+type SendEmailOptions = {
 	html: string;
 	receiver: string;
 	plainTextVersion?: string;
 	senderName: string;
 	subject: string;
-}
+};
 
-interface SendEmailResult {
+type SendEmailResult = {
 	accepted: Array<string>;
-}
+};
 
 export const sendEmail = async ({
 	html,
