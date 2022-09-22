@@ -10,9 +10,11 @@
 		"start": "node .output/server/index.mjs",
 		"prisma:generate": "prisma generate",
 		"prisma:dev": "prisma db push",
-		"prisma:migrate": "prisma migrate dev"
+		"prisma:migrate": "prisma migrate dev",
+		"prisma:studio": "prisma studio"
 	},
 	"dependencies": {
+		"@js-temporal/polyfill": "^0.4.2",
 		"@prisma/client": "^4.3.1",
 		"@trpc/client": "10.0.0-proxy-alpha.74",
 		"@trpc/server": "10.0.0-proxy-alpha.74",
