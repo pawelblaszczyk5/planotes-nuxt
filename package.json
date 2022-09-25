@@ -25,11 +25,11 @@
 		"zod": "^3.19.1"
 	},
 	"devDependencies": {
-		"@iconify/json": "^2.1.110",
+		"@iconify/json": "^2.1.112",
 		"@rushstack/eslint-patch": "^1.2.0",
 		"@vue/eslint-config-prettier": "^7.0.0",
-		"@vue/eslint-config-typescript": "^11.0.1",
-		"eslint": "^8.23.1",
+		"@vue/eslint-config-typescript": "^11.0.2",
+		"eslint": "^8.24.0",
 		"eslint-import-resolver-typescript": "^3.5.1",
 		"eslint-plugin-canonical": "^3.1.0",
 		"eslint-plugin-import": "^2.26.0",
