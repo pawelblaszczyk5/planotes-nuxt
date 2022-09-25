@@ -1,3 +1,7 @@
+import { defineNuxtConfig } from 'nuxt';
+
+// TODO: revert this when Unocss works with implicit import
+
 export default defineNuxtConfig({
 	modules: ['@unocss/nuxt'],
 	typescript: {
