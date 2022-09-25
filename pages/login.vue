@@ -4,9 +4,9 @@
 	const handleSubmit = (event: Event) => {
 		const form = event.currentTarget as HTMLFormElement;
 		const formData = new FormData(form);
-		const email = formData.get('email');
+		const email = formData.get('email') as string;
 
-		console.log(email);
+		trpc.user.sendMagicLink.mutate(email);
 	};
 </script>
 

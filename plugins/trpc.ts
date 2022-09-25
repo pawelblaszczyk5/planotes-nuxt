@@ -1,12 +1,12 @@
 import { createTRPCProxyClient } from '@trpc/client';
 
-import { type TrpcRouter } from '~/server/trpc';
+import { type AppRouter } from '~~/server/trpc/routers';
 
 export default defineNuxtPlugin(nuxtApp => {
 	const headers = useRequestHeaders(['cookie']);
 	const event = useRequestEvent();
 
-	const client = createTRPCProxyClient<TrpcRouter>({
+	const client = createTRPCProxyClient<AppRouter>({
 		url: process.server
 			? `http://localhost:${process.env['NITRO_PORT'] || process.env['PORT'] || 3000}/api/trpc`
 			: '/api/trpc',
@@ -28,6 +28,6 @@ export default defineNuxtPlugin(nuxtApp => {
 declare module '#app' {
 	// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 	interface NuxtApp {
-		$trpcClient: ReturnType<typeof createTRPCProxyClient<TrpcRouter>>;
+		$trpcClient: ReturnType<typeof createTRPCProxyClient<AppRouter>>;
 	}
 }

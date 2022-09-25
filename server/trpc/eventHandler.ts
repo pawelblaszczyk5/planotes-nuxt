@@ -2,7 +2,7 @@ import { resolveHTTPResponse } from '@trpc/server';
 import { type H3Event } from 'h3';
 import { createURL } from 'ufo';
 
-import { trpcRouter } from '~~/server/trpc';
+import { appRouter } from '~~/server/trpc/routers';
 import { getPrismaInstance } from '~~/server/utils/db';
 
 const TRPC_ENDPOINT_LENGTH = '/api/trpc'.length + 1;
@@ -19,7 +19,7 @@ export const trpcEventHandler = async (event: H3Event): Promise<string | undefin
 	const requestBody = isMethod(event, 'GET') ? null : await useBody(event);
 
 	const httpResponse = await resolveHTTPResponse({
-		router: trpcRouter,
+		router: appRouter,
 		req: {
 			method: req.method,
 			headers: req.headers,
