@@ -32,7 +32,7 @@ type SendEmailResult = {
 	accepted: Array<string>;
 };
 
-export const sendEmail = async ({
+const sendEmail = async ({
 	html,
 	receiver,
 	plainTextVersion,
@@ -52,4 +52,15 @@ export const sendEmail = async ({
 	} catch {
 		throw new Error('Unable to send email');
 	}
+};
+
+export const sendEmailWithMagicLink = (magicLink: string, receiver: string) => {
+	// TODO: use MJML probably and make this email proper one
+	sendEmail({
+		html: `Use <a href="${magicLink}" target="_blank">this link</a> to login`,
+		plainTextVersion: `Use this link to login: ${magicLink}`,
+		subject: 'Your magic link to use Planotes',
+		senderName: 'Planotes Magic Link',
+		receiver,
+	});
 };
