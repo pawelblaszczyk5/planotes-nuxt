@@ -19,13 +19,13 @@
 		"@trpc/client": "10.0.0-proxy-alpha.74",
 		"@trpc/server": "10.0.0-proxy-alpha.74",
 		"@types/nodemailer": "^6.4.6",
-		"@unocss/nuxt": "^0.45.22",
+		"@unocss/nuxt": "^0.45.24",
 		"nodemailer": "^6.7.8",
 		"ufo": "^0.8.5",
 		"zod": "^3.19.1"
 	},
 	"devDependencies": {
-		"@iconify/json": "^2.1.112",
+		"@iconify/json": "^2.1.113",
 		"@rushstack/eslint-patch": "^1.2.0",
 		"@vue/eslint-config-prettier": "^7.0.0",
 		"@vue/eslint-config-typescript": "^11.0.2",
