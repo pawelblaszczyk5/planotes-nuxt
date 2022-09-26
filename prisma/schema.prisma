@@ -11,6 +11,14 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(cuid())
-  email String @unique
+  id         String      @id @default(cuid())
+  email      String      @unique
+  magicLinks MagicLink[]
+}
+
+model MagicLink {
+  token      String @id @unique
+  validUntil BigInt
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String
 }

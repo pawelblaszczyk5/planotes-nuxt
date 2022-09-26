@@ -19,6 +19,7 @@ const envSchema = z.object({
 	SMTP_USER: withDevDefault(z.string().email(), 'magic@planotes.xyz'),
 	SMTP_PASSWORD: withDevDefault(z.string(), 'hard_password_123'),
 	SESSION_SECRET: withDevDefault(z.string(), 'SESSION_SECRET_XXX'),
+	APP_URL: withDevDefault(z.string().url(), 'http://localhost:3000'),
 });
 
 const result = envSchema.safeParse(process.env);

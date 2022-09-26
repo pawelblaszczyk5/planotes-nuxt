@@ -6,7 +6,7 @@
 		const formData = new FormData(form);
 		const email = formData.get('email') as string;
 
-		trpc.user.sendMagicLink.mutate(email);
+		trpc.session.sendMagicLink.mutate(email);
 	};
 </script>
 

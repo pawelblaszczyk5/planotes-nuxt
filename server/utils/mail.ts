@@ -54,7 +54,17 @@ const sendEmail = async ({
 	}
 };
 
-export const sendEmailWithMagicLink = (magicLink: string, receiver: string) => {
+type SendEmailWithMagicLinkOptions = {
+	magicLinkToken: string;
+	receiver: string;
+};
+
+export const sendEmailWithMagicLink = ({
+	magicLinkToken,
+	receiver,
+}: SendEmailWithMagicLinkOptions) => {
+	const magicLink = `${env.APP_URL}/magic?token=${magicLinkToken}`;
+
 	// TODO: use MJML probably and make this email proper one
 	sendEmail({
 		html: `Use <a href="${magicLink}" target="_blank">this link</a> to login`,
