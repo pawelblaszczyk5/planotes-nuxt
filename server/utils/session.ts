@@ -1,10 +1,15 @@
-import { Temporal } from '@js-temporal/polyfill';
 import { type H3Event } from 'h3';
 import { z } from 'zod';
 
 import { readSignedCookie, signCookie } from '~~/server/utils/cookies';
 import { env } from '~~/server/utils/env';
 import { parseJsonToString, parseStringToJson } from '~~/server/utils/parse';
+import {
+	getCurrentEpochSeconds,
+	getDateWithOffset,
+	isDateBeforeNow,
+	parseEpochSecondsToDate,
+} from '~~/server/utils/time';
 
 const sessionSchema = z.object({
 	userId: z.string().cuid(),
@@ -36,7 +41,7 @@ const getSessionObject = ({
 	userId,
 	duration,
 }: Pick<CreateSessionOptions, 'userId' | 'duration'>): Session => {
-	const validUntil = Temporal.Now.zonedDateTimeISO('UTC').add({
+	const validUntil = getDateWithOffset({
 		days: duration === 'persistent' ? PERSISTENT_DURATION_IN_DAYS : SESSION_DURATION_IN_DAYS,
 	}).epochSeconds;
 
@@ -44,14 +49,6 @@ const getSessionObject = ({
 		userId,
 		validUntil,
 	};
-};
-
-const isSessionValid = (validUntil: Session['validUntil']) => {
-	const sessionValidUntilDate =
-		Temporal.Instant.fromEpochSeconds(validUntil).toZonedDateTimeISO('UTC');
-	const currentDate = Temporal.Now.zonedDateTimeISO('UTC');
-
-	return Temporal.ZonedDateTime.compare(currentDate, sessionValidUntilDate) <= 0;
 };
 
 export const createSession = ({ event, userId, duration }: CreateSessionOptions) => {
@@ -62,10 +59,7 @@ export const createSession = ({ event, userId, duration }: CreateSessionOptions)
 
 		setCookie(event, SESSION_COOKIE_NAME, sessionCookieValue, {
 			...STATIC_COOKIE_OPTIONS,
-			maxAge:
-				duration === 'session'
-					? undefined
-					: session.validUntil - Temporal.Now.zonedDateTimeISO('UTC').epochSeconds,
+			maxAge: duration === 'session' ? undefined : session.validUntil - getCurrentEpochSeconds(),
 		});
 	} catch {
 		throw new Error(SESSION_ERROR);
@@ -82,9 +76,9 @@ export const getSession = (event: H3Event): Session => {
 	const sessionValue = readSignedCookie(sessionCookieValue, SESSION_SECRET);
 
 	try {
-		const parsedSession = parseStringToJson(sessionValue, sessionSchema);
+		const session = parseStringToJson(sessionValue, sessionSchema);
 
-		if (!isSessionValid(parsedSession.validUntil)) {
+		if (!isDateBeforeNow(parseEpochSecondsToDate(session.validUntil))) {
 			setCookie(event, SESSION_COOKIE_NAME, '', {
 				...STATIC_COOKIE_OPTIONS,
 				maxAge: 0,
@@ -93,7 +87,7 @@ export const getSession = (event: H3Event): Session => {
 			throw new Error(SESSION_ERROR);
 		}
 
-		return parsedSession;
+		return session;
 	} catch {
 		throw new Error(SESSION_ERROR);
 	}
