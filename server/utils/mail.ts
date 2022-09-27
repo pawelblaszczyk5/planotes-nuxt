@@ -66,7 +66,7 @@ export const sendEmailWithMagicLink = ({
 	const magicLink = `${env.APP_URL}/magic?token=${magicLinkToken}`;
 
 	// TODO: use MJML probably and make this email proper one
-	sendEmail({
+	return sendEmail({
 		html: `Use <a href="${magicLink}" target="_blank">this link</a> to login`,
 		plainTextVersion: `Use this link to login: ${magicLink}`,
 		subject: 'Your magic link to use Planotes',

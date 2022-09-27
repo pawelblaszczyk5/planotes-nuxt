@@ -31,6 +31,6 @@ export const sessionRouter = trpc.router({
 				},
 			});
 
-			sendEmailWithMagicLink({ receiver: email, magicLinkToken });
+			await sendEmailWithMagicLink({ receiver: email, magicLinkToken });
 		}),
 });
