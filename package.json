@@ -16,16 +16,16 @@
 	"dependencies": {
 		"@js-temporal/polyfill": "^0.4.2",
 		"@prisma/client": "^4.3.1",
-		"@trpc/client": "10.0.0-proxy-alpha.74",
-		"@trpc/server": "10.0.0-proxy-alpha.74",
+		"@trpc/client": "10.0.0-proxy-beta.8",
+		"@trpc/server": "10.0.0-proxy-beta.8",
 		"@types/nodemailer": "^6.4.6",
-		"@unocss/nuxt": "^0.45.24",
+		"@unocss/nuxt": "^0.45.25",
 		"nodemailer": "^6.7.8",
 		"ufo": "^0.8.5",
 		"zod": "^3.19.1"
 	},
 	"devDependencies": {
-		"@iconify/json": "^2.1.113",
+		"@iconify/json": "^2.1.114",
 		"@rushstack/eslint-patch": "^1.2.0",
 		"@vue/eslint-config-prettier": "^7.0.0",
 		"@vue/eslint-config-typescript": "^11.0.2",
