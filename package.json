@@ -46,5 +46,10 @@
 	"engines": {
 		"node": ">=16 <17",
 		"pnpm": ">=7"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"nuxt@3.0.0-rc.11": "patches/nuxt@3.0.0-rc.11.patch"
+		}
 	}
 }

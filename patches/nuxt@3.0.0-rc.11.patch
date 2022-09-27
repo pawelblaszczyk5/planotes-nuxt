@@ -1,0 +1,13 @@
+diff --git a/dist/core/runtime/nitro/error.mjs b/dist/core/runtime/nitro/error.mjs
+index 27392d38e80fcb33a0150dda724e9cbbfd23f967..ccaf6058e4723a4399561ec7eccb2c8d1d4d3673 100644
+--- a/dist/core/runtime/nitro/error.mjs
++++ b/dist/core/runtime/nitro/error.mjs
+@@ -1,6 +1,8 @@
+ import { withQuery } from "ufo";
+ import { normalizeError, isJsonRequest } from "#internal/nitro/utils";
+ export default (async function errorhandler(error, event) {
++  if (event.res.finished) return;
++
+   const { stack, statusCode, statusMessage, message } = normalizeError(error);
+   const errorObject = {
+     url: event.req.url,
