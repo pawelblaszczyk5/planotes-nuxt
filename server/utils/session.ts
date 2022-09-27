@@ -11,12 +11,17 @@ import {
 	parseEpochSecondsToDate,
 } from '~~/server/utils/time';
 
+const COOKIE_OPTIONS = {
+	httpOnly: true,
+	sameSite: 'lax',
+	path: '/',
+	secure: true,
+} as const;
+
 const sessionSchema = z.object({
 	userId: z.string().cuid(),
 	validUntil: z.number(),
 });
-
-type Session = z.infer<typeof sessionSchema>;
 
 type CreateSessionOptions = {
 	userId: string;
@@ -26,23 +31,19 @@ type CreateSessionOptions = {
 
 const SESSION_SECRET = env.SESSION_SECRET;
 const SESSION_COOKIE_NAME = 'sesid';
-const PERSISTENT_DURATION_IN_DAYS = 30;
-const SESSION_DURATION_IN_DAYS = 1;
 const SESSION_ERROR = 'There was a problem with creating/retriving session';
 
-const STATIC_COOKIE_OPTIONS = {
-	httpOnly: true,
-	sameSite: 'lax',
-	path: '/',
-	secure: true,
-} as const;
+const SESSION_DURATION_IN_DAYS: Record<CreateSessionOptions['duration'], number> = {
+	persistent: 30,
+	session: 1,
+};
 
 const getSessionObject = ({
 	userId,
 	duration,
-}: Pick<CreateSessionOptions, 'userId' | 'duration'>): Session => {
+}: Pick<CreateSessionOptions, 'userId' | 'duration'>) => {
 	const validUntil = getDateWithOffset({
-		days: duration === 'persistent' ? PERSISTENT_DURATION_IN_DAYS : SESSION_DURATION_IN_DAYS,
+		days: SESSION_DURATION_IN_DAYS[duration],
 	}).epochSeconds;
 
 	return {
@@ -55,10 +56,10 @@ export const createSession = ({ event, userId, duration }: CreateSessionOptions)
 	const session = getSessionObject({ userId, duration });
 
 	try {
-		const sessionCookieValue = signCookie(parseJsonToString(session), SESSION_SECRET);
+		const cookieValue = signCookie(parseJsonToString(session), SESSION_SECRET);
 
-		setCookie(event, SESSION_COOKIE_NAME, sessionCookieValue, {
-			...STATIC_COOKIE_OPTIONS,
+		setCookie(event, SESSION_COOKIE_NAME, cookieValue, {
+			...COOKIE_OPTIONS,
 			maxAge: duration === 'session' ? undefined : session.validUntil - getCurrentEpochSeconds(),
 		});
 	} catch {
@@ -66,23 +67,20 @@ export const createSession = ({ event, userId, duration }: CreateSessionOptions)
 	}
 };
 
-export const getSession = (event: H3Event): Session => {
-	const sessionCookieValue = getCookie(event, SESSION_COOKIE_NAME);
+export const getSession = (event: H3Event) => {
+	const cookieValue = getCookie(event, SESSION_COOKIE_NAME);
 
-	if (!sessionCookieValue) {
+	if (!cookieValue) {
 		throw new Error(SESSION_ERROR);
 	}
 
-	const sessionValue = readSignedCookie(sessionCookieValue, SESSION_SECRET);
+	const unparsedSession = readSignedCookie(cookieValue, SESSION_SECRET);
 
 	try {
-		const session = parseStringToJson(sessionValue, sessionSchema);
+		const session = parseStringToJson(unparsedSession, sessionSchema);
 
 		if (!isDateBeforeNow(parseEpochSecondsToDate(session.validUntil))) {
-			setCookie(event, SESSION_COOKIE_NAME, '', {
-				...STATIC_COOKIE_OPTIONS,
-				maxAge: 0,
-			});
+			removeSession(event);
 
 			throw new Error(SESSION_ERROR);
 		}
@@ -91,4 +89,23 @@ export const getSession = (event: H3Event): Session => {
 	} catch {
 		throw new Error(SESSION_ERROR);
 	}
+};
+
+export const removeSession = (event: H3Event) =>
+	setCookie(event, SESSION_COOKIE_NAME, '', {
+		...COOKIE_OPTIONS,
+		maxAge: 0,
+	});
+
+const MAGIC_IDENTIFIER_SECRET = env.MAGIC_IDENTIFIER_SECRET;
+const MAGIC_IDENTIFIER_COOKIE_NAME = 'magid';
+const MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS = 1800; // 30 minutes
+
+export const createMagicIdentifier = (event: H3Event, id: string) => {
+	const cookieValue = signCookie(id, MAGIC_IDENTIFIER_SECRET);
+
+	setCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME, cookieValue, {
+		...COOKIE_OPTIONS,
+		maxAge: MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS,
+	});
 };

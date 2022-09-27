@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 import { trpc } from '~~/server/trpc';
 import { sendEmailWithMagicLink } from '~~/server/utils/mail';
+import { createMagicIdentifier } from '~~/server/utils/session';
 import { getDateWithOffset } from '~~/server/utils/time';
 
 const MAGIC_LINK_VALIDITY_IN_MINUTES = 30;
@@ -11,7 +12,7 @@ const MAGIC_LINK_VALIDITY_IN_MINUTES = 30;
 export const sessionRouter = trpc.router({
 	sendMagicLink: trpc.procedure
 		.input(z.string().email())
-		.mutation(async ({ input, ctx: { db } }) => {
+		.mutation(async ({ input, ctx: { db, event } }) => {
 			const { email, id: userId } = await db.user.upsert({
 				where: {
 					email: input,
@@ -23,7 +24,7 @@ export const sessionRouter = trpc.router({
 			});
 			const magicLinkToken = randomBytes(32).toString('base64url');
 
-			await db.magicLink.create({
+			const { id } = await db.magicLink.create({
 				data: {
 					token: magicLinkToken,
 					userId,
@@ -31,6 +32,7 @@ export const sessionRouter = trpc.router({
 				},
 			});
 
+			createMagicIdentifier(event, id);
 			await sendEmailWithMagicLink({ receiver: email, magicLinkToken });
 		}),
 });
