@@ -2,7 +2,11 @@ import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 
 import { type AppRouter } from '~~/server/trpc/routers';
 
-export default defineNuxtPlugin(nuxtApp => {
+type TrpcClientPluginInjections = {
+	trpcClient: ReturnType<typeof createTRPCProxyClient<AppRouter>>;
+};
+
+export default defineNuxtPlugin<TrpcClientPluginInjections>(nuxtApp => {
 	const headers = useRequestHeaders(['cookie']);
 	const event = useRequestEvent();
 

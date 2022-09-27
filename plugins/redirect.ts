@@ -1,3 +1,7 @@
+type RedirectPluginsInjections = {
+	redirect: (...options: Parameters<typeof navigateTo>) => Promise<void>;
+};
+
 const REDIRECT_WORKAROUND_SYMBOL = Symbol('REDIRECT_WORKAROUND');
 
 const redirect = async (...options: Parameters<typeof navigateTo>) => {
@@ -6,7 +10,7 @@ const redirect = async (...options: Parameters<typeof navigateTo>) => {
 	return createError({ data: REDIRECT_WORKAROUND_SYMBOL });
 };
 
-export default defineNuxtPlugin(nuxtApp => {
+export default defineNuxtPlugin<RedirectPluginsInjections>(nuxtApp => {
 	nuxtApp.vueApp.config.errorHandler = async error => {
 		if (typeof error === 'object' && error != null && !Array.isArray(error) && 'data' in error) {
 			const assertedError = error as Record<'data', unknown>;
