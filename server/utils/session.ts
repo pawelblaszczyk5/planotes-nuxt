@@ -8,7 +8,7 @@ import {
 	getCurrentEpochSeconds,
 	getDateWithOffset,
 	isDateBeforeNow,
-	parseEpochSecondsToDate,
+	convertEpochSecondsToDate,
 } from '~~/server/utils/time';
 
 const COOKIE_OPTIONS = {
@@ -79,7 +79,7 @@ export const getSession = (event: H3Event) => {
 	try {
 		const session = parseStringToJson(unparsedSession, sessionSchema);
 
-		if (!isDateBeforeNow(parseEpochSecondsToDate(session.validUntil))) {
+		if (isDateBeforeNow(convertEpochSecondsToDate(session.validUntil))) {
 			removeSession(event);
 
 			throw new Error(SESSION_ERROR);

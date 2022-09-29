@@ -10,7 +10,7 @@ export const isDateBefore = (
 export const isDateBeforeNow = (dateToCheck: Temporal.ZonedDateTime) =>
 	isDateBefore(dateToCheck, getCurrentDate());
 
-export const parseEpochSecondsToDate = (seconds: number) =>
+export const convertEpochSecondsToDate = (seconds: number) =>
 	Temporal.Instant.fromEpochSeconds(seconds).toZonedDateTimeISO('UTC');
 
 export const getDateWithOffset = (offset: Temporal.Duration | Temporal.DurationLike) =>
