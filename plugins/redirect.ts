@@ -1,5 +1,5 @@
 type RedirectPluginsInjections = {
-	redirect: (...options: Parameters<typeof navigateTo>) => Promise<void>;
+	redirect: typeof redirect;
 };
 
 const REDIRECT_WORKAROUND_SYMBOL = Symbol('REDIRECT_WORKAROUND');
