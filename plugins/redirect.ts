@@ -12,13 +12,16 @@ const redirect = async (...options: Parameters<typeof navigateTo>) => {
 
 export default defineNuxtPlugin<RedirectPluginsInjections>(nuxtApp => {
 	nuxtApp.vueApp.config.errorHandler = async error => {
-		if (typeof error === 'object' && error != null && !Array.isArray(error) && 'data' in error) {
+		if (typeof error === 'object' && error !== null && !Array.isArray(error) && 'data' in error) {
 			const assertedError = error as Record<'data', unknown>;
 
 			if (assertedError.data !== REDIRECT_WORKAROUND_SYMBOL) {
 				throw error;
 			}
+			return;
 		}
+
+		throw error;
 	};
 
 	nuxtApp.provide('redirect', redirect);
