@@ -133,6 +133,8 @@ const parseSessionCookie = (cookieValue: string) => {
 	}
 };
 
+const COOKIE_DOMAIN = env.COOKIE_DOMAIN;
+
 const MAGIC_IDENTIFIER_SECRET = env.MAGIC_IDENTIFIER_SECRET;
 const MAGIC_IDENTIFIER_COOKIE_NAME = 'magid';
 const MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS = 1800; // 30 minutes
@@ -141,11 +143,12 @@ const MAGIC_LINK_VALIDITY_IN_MINUTES = 30;
 const SESSION_SECRET = env.SESSION_SECRET;
 const SESSION_COOKIE_NAME = 'sesid';
 
-const COOKIE_OPTIONS = {
+const COOKIE_OPTIONS: Parameters<typeof setCookie>[3] = {
 	httpOnly: true,
 	sameSite: 'lax',
 	path: '/',
 	secure: true,
+	domain: COOKIE_DOMAIN,
 } as const;
 
 const SESSION_DURATION_IN_DAYS: Record<SessionDuration, number> = {

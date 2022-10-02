@@ -21,6 +21,7 @@ const envSchema = z.object({
 	SESSION_SECRET: withDevDefault(z.string(), 'SESSION_SECRET_XXX'),
 	MAGIC_IDENTIFIER_SECRET: withDevDefault(z.string(), 'MAGIC_IDENTIFIER_SECRET_XXX'),
 	APP_URL: withDevDefault(z.string().url(), 'http://localhost:3000'),
+	COOKIE_DOMAIN: withDevDefault(z.string(), 'localhost'),
 });
 
 const result = envSchema.safeParse(process.env);
