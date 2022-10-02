@@ -1,5 +1,5 @@
 import { trpc } from '~~/server/trpc';
-import { sessionRouter } from '~~/server/trpc/routers/session';
+import { sessionRouter } from '~~/server/trpc/modules/session';
 
 export const appRouter = trpc.router({
 	session: sessionRouter,

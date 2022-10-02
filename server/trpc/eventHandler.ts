@@ -2,12 +2,13 @@ import { resolveHTTPResponse } from '@trpc/server';
 import { type H3Event } from 'h3';
 import { createURL } from 'ufo';
 
-import { appRouter } from '~~/server/trpc/routers';
+import { appRouter } from '~~/server/trpc/modules';
+import { getSession } from '~~/server/trpc/modules/session';
 import { getPrismaInstance } from '~~/server/utils/db';
 
 const TRPC_ENDPOINT_LENGTH = '/api/trpc'.length + 1;
 
-export const trpcEventHandler = async (event: H3Event): Promise<string | undefined> => {
+export const trpcEventHandler = async (event: H3Event) => {
 	const { req, res } = event;
 
 	if (!req.url || !req.method) {
@@ -30,6 +31,7 @@ export const trpcEventHandler = async (event: H3Event): Promise<string | undefin
 		createContext: async () => ({
 			event,
 			db: await getPrismaInstance(),
+			session: getSession(event),
 		}),
 	});
 

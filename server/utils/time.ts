@@ -7,8 +7,8 @@ export const isDateBefore = (
 	dateToCompareAgainst: Temporal.ZonedDateTime,
 ) => Temporal.ZonedDateTime.compare(dateToCheck, dateToCompareAgainst) === -1;
 
-export const isDateBeforeNow = (dateToCheck: Temporal.ZonedDateTime) =>
-	isDateBefore(dateToCheck, getCurrentDate());
+export const isDateInPast = (dateToCheck: Temporal.ZonedDateTime) =>
+	isDateBefore(getCurrentDate(), dateToCheck);
 
 export const convertEpochSecondsToDate = (seconds: number) =>
 	Temporal.Instant.fromEpochSeconds(seconds).toZonedDateTimeISO('UTC');

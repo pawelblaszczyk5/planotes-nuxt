@@ -1,6 +1,6 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 
-import { type AppRouter } from '~~/server/trpc/routers';
+import { type AppRouter } from '~~/server/trpc/modules';
 
 type TrpcClientPluginInjections = {
 	trpcClient: ReturnType<typeof createTRPCProxyClient<AppRouter>>;

@@ -54,16 +54,8 @@ const sendEmail = async ({
 	}
 };
 
-type SendEmailWithMagicLinkOptions = {
-	magicLinkToken: string;
-	receiver: string;
-};
-
-export const sendEmailWithMagicLink = ({
-	magicLinkToken,
-	receiver,
-}: SendEmailWithMagicLinkOptions) => {
-	const magicLink = `${env.APP_URL}/magic?token=${magicLinkToken}`;
+export const sendEmailWithMagicLink = (token: string, receiver: string) => {
+	const magicLink = `${env.APP_URL}/magic?token=${token}`;
 
 	// TODO: use MJML probably and make this email proper one
 	return sendEmail({
