@@ -127,7 +127,7 @@ const sessionSchema = z.object({
 
 const parseSessionCookie = (cookieValue: string) => {
 	try {
-		return parseStringToJson(cookieValue, sessionSchema);
+		return parseStringToJson(readSignedCookie(cookieValue, SESSION_SECRET), sessionSchema);
 	} catch {
 		return null;
 	}
