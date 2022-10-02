@@ -1,10 +1,12 @@
 import { randomBytes } from 'node:crypto';
 
 import { SessionDuration } from '@prisma/client';
+import { TRPCError } from '@trpc/server';
 import { type H3Event } from 'h3';
 import { z } from 'zod';
 
 import { trpc } from '~~/server/trpc';
+import { signedOutProcedure } from '~~/server/trpc/middlewares';
 import { readSignedCookie, signCookie } from '~~/server/utils/cookies';
 import { env } from '~~/server/utils/env';
 import { sendEmailWithMagicLink } from '~~/server/utils/mail';
@@ -17,7 +19,7 @@ import {
 } from '~~/server/utils/time';
 
 export const sessionRouter = trpc.router({
-	sendMagicLink: trpc.procedure
+	sendMagicLink: signedOutProcedure
 		.input(
 			z.object({
 				email: z.string().email(),
@@ -52,14 +54,13 @@ export const sessionRouter = trpc.router({
 
 			await sendEmailWithMagicLink(token, email);
 		}),
-	verifyMagicLink: trpc.procedure
+	verifyMagicLink: signedOutProcedure
 		.input(z.string())
 		.mutation(async ({ input, ctx: { db, event } }) => {
 			const magicIdentifierCookieValue = getCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME);
 
 			if (!magicIdentifierCookieValue) {
-				// HANDLE ERROR PROPERLY FOR TRPC
-				throw new Error(MAGIC_IDENTIFIER_ERROR);
+				throw new TRPCError({ code: 'BAD_REQUEST' });
 			}
 
 			const magicIdentifier = readSignedCookie(magicIdentifierCookieValue, MAGIC_IDENTIFIER_SECRET);
@@ -74,8 +75,7 @@ export const sessionRouter = trpc.router({
 			});
 
 			if (isDateInPast(convertEpochSecondsToDate(validUntil)) || input !== token) {
-				// HANDLE ERROR PROPERLY FOR TRPC
-				throw new Error(MAGIC_IDENTIFIER_ERROR);
+				throw new TRPCError({ code: 'BAD_REQUEST' });
 			}
 
 			const session = {
@@ -91,6 +91,7 @@ export const sessionRouter = trpc.router({
 				maxAge: getSessionCookieMaxAge(sessionDuration, session.validUntil),
 			});
 		}),
+	isLoggedIn: trpc.procedure.query(({ ctx: { session } }) => Boolean(session)),
 });
 
 export type Session = z.infer<typeof sessionSchema>;
@@ -134,7 +135,6 @@ const parseSessionCookie = (cookieValue: string) => {
 
 const MAGIC_IDENTIFIER_SECRET = env.MAGIC_IDENTIFIER_SECRET;
 const MAGIC_IDENTIFIER_COOKIE_NAME = 'magid';
-const MAGIC_IDENTIFIER_ERROR = 'There was a problem with retriving magic identifier';
 const MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS = 1800; // 30 minutes
 const MAGIC_LINK_VALIDITY_IN_MINUTES = 30;
 
