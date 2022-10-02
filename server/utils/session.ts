@@ -1,3 +1,4 @@
+import { SessionDuration } from '@prisma/client';
 import { type H3Event } from 'h3';
 import { z } from 'zod';
 
@@ -25,7 +26,7 @@ const sessionSchema = z.object({
 
 type CreateSessionOptions = {
 	userId: string;
-	duration: 'session' | 'persistent';
+	duration: SessionDuration;
 	event: H3Event;
 };
 
@@ -33,9 +34,9 @@ const SESSION_SECRET = env.SESSION_SECRET;
 const SESSION_COOKIE_NAME = 'sesid';
 const SESSION_ERROR = 'There was a problem with creating/retriving session';
 
-const SESSION_DURATION_IN_DAYS: Record<CreateSessionOptions['duration'], number> = {
-	persistent: 30,
-	session: 1,
+const SESSION_DURATION_IN_DAYS: Record<SessionDuration, number> = {
+	[SessionDuration.PERSISTENT]: 30,
+	[SessionDuration.EPHEMERAL]: 1,
 };
 
 const getSessionObject = ({
@@ -57,10 +58,14 @@ export const createSession = ({ event, userId, duration }: CreateSessionOptions)
 
 	try {
 		const cookieValue = signCookie(parseJsonToString(session), SESSION_SECRET);
+		const cookieMaxAge =
+			duration === SessionDuration.EPHEMERAL
+				? undefined
+				: session.validUntil - getCurrentEpochSeconds();
 
 		setCookie(event, SESSION_COOKIE_NAME, cookieValue, {
 			...COOKIE_OPTIONS,
-			maxAge: duration === 'session' ? undefined : session.validUntil - getCurrentEpochSeconds(),
+			maxAge: cookieMaxAge,
 		});
 	} catch {
 		throw new Error(SESSION_ERROR);
@@ -100,6 +105,7 @@ export const removeSession = (event: H3Event) =>
 const MAGIC_IDENTIFIER_SECRET = env.MAGIC_IDENTIFIER_SECRET;
 const MAGIC_IDENTIFIER_COOKIE_NAME = 'magid';
 const MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS = 1800; // 30 minutes
+const MAGIC_IDENTIFIER_ERROR = 'There was a problem with retriving magic identifier';
 
 export const createMagicIdentifier = (event: H3Event, id: string) => {
 	const cookieValue = signCookie(id, MAGIC_IDENTIFIER_SECRET);
@@ -108,4 +114,21 @@ export const createMagicIdentifier = (event: H3Event, id: string) => {
 		...COOKIE_OPTIONS,
 		maxAge: MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS,
 	});
+};
+
+export const getMagicIdentifier = (event: H3Event) => {
+	const cookieValue = getCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME);
+
+	if (!cookieValue) {
+		throw new Error(MAGIC_IDENTIFIER_ERROR);
+	}
+
+	setCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME, '', {
+		...COOKIE_OPTIONS,
+		maxAge: 0,
+	});
+
+	const magicIdentifier = readSignedCookie(cookieValue, MAGIC_IDENTIFIER_SECRET);
+
+	return magicIdentifier;
 };
