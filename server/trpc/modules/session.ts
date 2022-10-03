@@ -36,6 +36,24 @@ export const sessionRouter = trpc.router({
 					email,
 				},
 			});
+			const previousMagicLink = await db.magicLink.findFirst({
+				where: {
+					validUntil: {
+						gte: getDateWithOffset({
+							minutes:
+								MAGIC_LINK_VALIDITY_IN_MINUTES - MAGIC_LINK_REQUIRED_GENERATION_DELAY_IN_MINUTES,
+						}).epochSeconds,
+					},
+					userId: {
+						equals: userId,
+					},
+				},
+			});
+
+			if (previousMagicLink) {
+				throw new TRPCError({ code: 'TOO_MANY_REQUESTS' });
+			}
+
 			const token = generateMagicLinkToken();
 			const { id: magicLinkId } = await db.magicLink.create({
 				data: {
@@ -135,10 +153,11 @@ const parseSessionCookie = (cookieValue: string) => {
 
 const COOKIE_DOMAIN = env.COOKIE_DOMAIN;
 
+const MAGIC_LINK_VALIDITY_IN_MINUTES = 15;
+const MAGIC_LINK_REQUIRED_GENERATION_DELAY_IN_MINUTES = 2;
 const MAGIC_IDENTIFIER_SECRET = env.MAGIC_IDENTIFIER_SECRET;
 const MAGIC_IDENTIFIER_COOKIE_NAME = 'magid';
-const MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS = 1800; // 30 minutes
-const MAGIC_LINK_VALIDITY_IN_MINUTES = 30;
+const MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS = MAGIC_LINK_VALIDITY_IN_MINUTES * 60;
 
 const SESSION_SECRET = env.SESSION_SECRET;
 const SESSION_COOKIE_NAME = 'sesid';
