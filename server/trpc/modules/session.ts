@@ -17,6 +17,7 @@ import {
 	getDateWithOffset,
 	isDateInPast,
 } from '~~/server/utils/time';
+import { SESSION_ERRORS } from '~~/shared/errors';
 
 export const sessionRouter = trpc.router({
 	sendMagicLink: signedOutProcedure
@@ -51,7 +52,10 @@ export const sessionRouter = trpc.router({
 			});
 
 			if (previousMagicLink) {
-				throw new TRPCError({ code: 'TOO_MANY_REQUESTS' });
+				throw new TRPCError({
+					code: 'TOO_MANY_REQUESTS',
+					message: SESSION_ERRORS.MAGIC_LINK_GENERATED_RECENTLY,
+				});
 			}
 
 			const token = generateMagicLinkToken();
@@ -70,7 +74,20 @@ export const sessionRouter = trpc.router({
 				maxAge: MAGIC_IDENTIFIER_MAX_AGE_IN_SECONDS,
 			});
 
-			await sendEmailWithMagicLink(token, email);
+			try {
+				await sendEmailWithMagicLink(token, email);
+			} catch {
+				removeMagicIdentifierCookie(event);
+				await db.magicLink.delete({
+					where: {
+						id: magicLinkId,
+					},
+				});
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: SESSION_ERRORS.UNABLE_TO_SEND_EMAIL,
+				});
+			}
 		}),
 	verifyMagicLink: signedOutProcedure
 		.input(z.string())
@@ -78,22 +95,29 @@ export const sessionRouter = trpc.router({
 			const magicIdentifierCookieValue = getCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME);
 
 			if (!magicIdentifierCookieValue) {
-				throw new TRPCError({ code: 'BAD_REQUEST' });
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: SESSION_ERRORS.MISSING_MAGIC_IDENTIFIER,
+				});
 			}
 
 			const magicIdentifier = readSignedCookie(magicIdentifierCookieValue, MAGIC_IDENTIFIER_SECRET);
 
-			setCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME, '', {
-				...COOKIE_OPTIONS,
-				maxAge: 0,
-			});
+			removeMagicIdentifierCookie(event);
 
-			const { validUntil, token, userId, sessionDuration } = await db.magicLink.delete({
+			const magicLink = await db.magicLink.findUnique({
 				where: { id: magicIdentifier },
 			});
 
+			if (!magicLink)
+				throw new TRPCError({ code: 'BAD_REQUEST', message: SESSION_ERRORS.INVALID_MAGIC_TOKEN });
+
+			const { validUntil, token, userId, sessionDuration } = magicLink;
+
+			await db.magicLink.delete({ where: { id: magicIdentifier } });
+
 			if (isDateInPast(convertEpochSecondsToDate(validUntil)) || input !== token) {
-				throw new TRPCError({ code: 'BAD_REQUEST' });
+				throw new TRPCError({ code: 'BAD_REQUEST', message: SESSION_ERRORS.INVALID_MAGIC_TOKEN });
 			}
 
 			const session = {
@@ -137,6 +161,12 @@ const generateMagicLinkToken = () => randomBytes(32).toString('base64url');
 
 const getSessionCookieMaxAge = (sessionDuration: SessionDuration, validUntil: number) =>
 	sessionDuration === SessionDuration.EPHEMERAL ? undefined : validUntil - getCurrentEpochSeconds();
+
+const removeMagicIdentifierCookie = (event: H3Event) =>
+	setCookie(event, MAGIC_IDENTIFIER_COOKIE_NAME, '', {
+		...COOKIE_OPTIONS,
+		maxAge: 0,
+	});
 
 const sessionSchema = z.object({
 	userId: z.string().cuid(),
