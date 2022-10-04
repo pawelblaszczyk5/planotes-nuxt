@@ -1,4 +1,5 @@
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import { appendHeader } from 'h3';
 
 import { type AppRouter } from '~~/server/trpc/modules';
 
@@ -14,14 +15,18 @@ export default defineNuxtPlugin<TrpcClientPluginInjections>(nuxtApp => {
 		links: [
 			httpBatchLink({
 				url: process.server
-					? `http://localhost:${process.env['NITRO_PORT'] || process.env['PORT'] || 3000}/api/trpc`
+					? `http://localhost:${
+							(process.env['NITRO_PORT'] || process.env['PORT']) ?? 3000
+					  }/api/trpc`
 					: '/api/trpc',
 				headers: headers,
 				fetch: async (input, init) => {
 					const response = await fetch(input, init);
 
 					if (process.server) {
-						event.res.setHeader('set-cookie', response.headers.get('set-cookie') || '');
+						const cookies = (response.headers.get('set-cookie') ?? '').split(', ');
+
+						cookies.forEach(cookie => appendHeader(event, 'set-cookie', cookie));
 					}
 
 					return response;
