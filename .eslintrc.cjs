@@ -60,6 +60,7 @@ module.exports = {
 		'unicorn/prefer-top-level-await': 'off',
 		'unicorn/no-keyword-prefix': 'off',
 		'unicorn/explicit-length-check': 'off',
+		'unicorn/prefer-spread': 'off',
 		'vue/html-self-closing': [
 			'error',
 			{
