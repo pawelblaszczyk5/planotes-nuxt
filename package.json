@@ -36,7 +36,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-unicorn": "^44.0.0",
 		"eslint-plugin-vue": "^9.5.1",
-		"nuxt": "3.0.0-rc.11",
+		"nuxt": "npm:nuxt3@3.0.0-rc.12-27746784.92ff066",
 		"prettier": "^2.7.1",
 		"prettier-plugin-tailwindcss": "^0.1.13",
 		"prisma": "^4.4.0",
@@ -49,7 +49,7 @@
 	},
 	"pnpm": {
 		"patchedDependencies": {
-			"nuxt@3.0.0-rc.11": "patches/nuxt@3.0.0-rc.11.patch"
+			"nuxt3@3.0.0-rc.12-27746784.92ff066": "patches/nuxt3@3.0.0-rc.12-27746784.92ff066.patch"
 		}
 	}
 }
