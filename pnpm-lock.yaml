@@ -6,7 +6,7 @@ patchedDependencies:
     path: patches/nuxt3@3.0.0-rc.12-27746784.92ff066.patch
 
 specifiers:
-  '@iconify/json': ^2.1.117
+  '@iconify/json': ^2.1.118
   '@js-temporal/polyfill': ^0.4.2
   '@prisma/client': ^4.4.0
   '@rushstack/eslint-patch': ^1.2.0
@@ -21,8 +21,8 @@ specifiers:
   eslint-plugin-canonical: ^3.1.0
   eslint-plugin-import: ^2.26.0
   eslint-plugin-prettier: ^4.2.1
-  eslint-plugin-unicorn: ^44.0.0
-  eslint-plugin-vue: ^9.5.1
+  eslint-plugin-unicorn: ^44.0.1
+  eslint-plugin-vue: ^9.6.0
   nodemailer: ^6.8.0
   nuxt: npm:nuxt3@3.0.0-rc.12-27746784.92ff066
   prettier: ^2.7.1
@@ -45,17 +45,17 @@ dependencies:
   zod: 3.19.1
 
 devDependencies:
-  '@iconify/json': 2.1.117
+  '@iconify/json': 2.1.118
   '@rushstack/eslint-patch': 1.2.0
   '@vue/eslint-config-prettier': 7.0.0_uoqzb7ub56apwdxrwurswvvfwe
-  '@vue/eslint-config-typescript': 11.0.2_xgc4xirg4ejg2tgchx2nhou42q
+  '@vue/eslint-config-typescript': 11.0.2_vnnms2vwgxhb7jv3u2ncwd7xzm
   eslint: 8.24.0
   eslint-import-resolver-typescript: 3.5.1_dg2pe6kqkrddxbf2funb723kue
   eslint-plugin-canonical: 3.1.0_eslint@8.24.0
   eslint-plugin-import: 2.26.0_m2gibxzq5a3t7rkvqdht36asqq
   eslint-plugin-prettier: 4.2.1_uoqzb7ub56apwdxrwurswvvfwe
-  eslint-plugin-unicorn: 44.0.0_eslint@8.24.0
-  eslint-plugin-vue: 9.5.1_eslint@8.24.0
+  eslint-plugin-unicorn: 44.0.1_eslint@8.24.0
+  eslint-plugin-vue: 9.6.0_eslint@8.24.0
   nuxt: /nuxt3/3.0.0-rc.12-27746784.92ff066_4ru5efykohwdo5pco2vfcx53ou_ypn2ylkkyfa5i233caldtndbqa
   prettier: 2.7.1
   prettier-plugin-tailwindcss: 0.1.13_prettier@2.7.1
@@ -424,8 +424,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.117:
-    resolution: {integrity: sha512-/09IuBTE/X10GHs2/rspqK5VfBypHi/aa2yvqWyOuybbQTjoOcPIoi/zg+s1HvloHynVr+Avxj3whtZ6CfesfA==}
+  /@iconify/json/2.1.118:
+    resolution: {integrity: sha512-mvCocCcWIIoF/IiBQS0hIMqpmXYVbZsmNM8CyQCn6jEPEEKWpW5/vK+W+qOWO7+F7Hrs3//8OyLMh131by7zSQ==}
     dependencies:
       '@iconify/types': 2.0.0
       pathe: 0.3.8
@@ -1463,7 +1463,7 @@ packages:
       prettier: 2.7.1
     dev: true
 
-  /@vue/eslint-config-typescript/11.0.2_xgc4xirg4ejg2tgchx2nhou42q:
+  /@vue/eslint-config-typescript/11.0.2_vnnms2vwgxhb7jv3u2ncwd7xzm:
     resolution: {integrity: sha512-EiKud1NqlWmSapBFkeSrE994qpKx7/27uCGnhdqzllYDpQZroyX/O6bwjEpeuyKamvLbsGdO6PMR2faIf+zFnw==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -1477,7 +1477,7 @@ packages:
       '@typescript-eslint/eslint-plugin': 5.38.0_nk5rsk4g43flw25mxr6nade4cy
       '@typescript-eslint/parser': 5.38.0_ypn2ylkkyfa5i233caldtndbqa
       eslint: 8.24.0
-      eslint-plugin-vue: 9.5.1_eslint@8.24.0
+      eslint-plugin-vue: 9.6.0_eslint@8.24.0
       typescript: 4.8.4
       vue-eslint-parser: 9.1.0_eslint@8.24.0
     transitivePeerDependencies:
@@ -2866,8 +2866,8 @@ packages:
       prettier-linter-helpers: 1.0.0
     dev: true
 
-  /eslint-plugin-unicorn/44.0.0_eslint@8.24.0:
-    resolution: {integrity: sha512-GbkxkdNzY7wNEfZnraAP+oA+aqqzSrNZmO37kjW1DyqnSK/ah08ySDdIecObpx46twv+zcQvH8i0CHP98Wo64w==}
+  /eslint-plugin-unicorn/44.0.1_eslint@8.24.0:
+    resolution: {integrity: sha512-ly6Ye9OfgYBCw/FfsdycCzAztcRd+pOA0F6xZwtUsUkgOBjtNR0684xC7u+0RmE3SKr3y7z8MaIWunw36tbZdg==}
     engines: {node: '>=14.18'}
     peerDependencies:
       eslint: '>=8.23.1'
@@ -2889,8 +2889,8 @@ packages:
       strip-indent: 3.0.0
     dev: true
 
-  /eslint-plugin-vue/9.5.1_eslint@8.24.0:
-    resolution: {integrity: sha512-Y0sL2RY7Xc9S8kNih9lbwHIDmewUg9bfas6WSzsOWRgDXhIHKxRBZYNAnVcXBFfE+bMWHUA5GLChl7TcTYUI8w==}
+  /eslint-plugin-vue/9.6.0_eslint@8.24.0:
+    resolution: {integrity: sha512-zzySkJgVbFCylnG2+9MDF7N+2Rjze2y0bF8GyUNpFOnT8mCMfqqtLDJkHBuYu9N/psW1A6DVbQhPkP92E+qakA==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^6.2.0 || ^7.0.0 || ^8.0.0
