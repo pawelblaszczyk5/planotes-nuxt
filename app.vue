@@ -6,5 +6,6 @@
 </script>
 
 <template>
+	<SystemColorModeDetector />
 	<NuxtPage />
 </template>
