@@ -10,6 +10,7 @@
 
 <template>
 	<Head>
-		<Script :data-theme="colorMode" :src="colorModeScriptUrl" />
+		<Script v-if="colorMode === 'SYSTEM'" :src="colorModeScriptUrl" />
+		<Html v-else :class="colorMode === 'DARK' ? 'dark' : ''" />
 	</Head>
 </template>
